@@ -1,0 +1,19 @@
+{
+  "name": "kabnan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/u31999/kabnan.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/u31999/kabnan/issues"
+  },
+  "homepage": "https://github.com/u31999/kabnan#readme"
+}
