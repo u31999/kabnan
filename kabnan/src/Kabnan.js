@@ -1,87 +1,116 @@
+import classes from './kabnan.module.css';
+import {useState} from 'react';
+
 const KabnabBoard = () => {
-    let tasks = {
-         backlog: [],
-        todo: [],
-        onGoing: [],
-        done: [],
-    }
+    let [backLog, setBackLog] = useState([]);
+    let [todo, setTodo] = useState([]);
+    let [onGoing, setOnGoing] = useState([]);
+    let [done, setDone] = useState([]);
+
+   
     const addTask = () => {
         const input = document.querySelector('#task');
-        if(input.value !== '') return;
-        tasks.backlog.push(input.value);
-       
+        if(input.value === '') return;
+        setBackLog(backLog.concat(input.value));
+        input.value = '';    
     }
-    const goBack = (e, i, t) => {
-            if(e.target.parentElement.id === 'backlog') {
-            return;
-        }else if(e.target.parentElement.id === 'todo') {
-            tasks.backlog.push(t);
-            tasks.todo.splice(i, 1);
-        }else if(e.target.parentElement.id === 'ongoing') {
-            tasks.todo.push(t);
-            tasks.onGoing.splice(i, 1);
-        }else if(e.target.parentElement.id === 'done') {
-            tasks.onGoing.push(t);
-            tasks.done.splice(i, 1);
-        };
 
+    const enterClicked = (e) => {
+        if(e.keyCode === 13) {
+        const input = document.querySelector('#task');
+            if(input.value === '') return;
+            setBackLog(backLog.concat(input.value));
+            input.value = '';  
+        }
     }
-    const goForward = (e, i, t) => {
-        if(e.target.parentElement.id === 'backlog') {
-            tasks.todo.push(t);
-            tasks.backlog.splice(i, 1);
-        }else if(e.target.parentElement.id === 'todo') {
-            tasks.onGoing.push(t);
-            tasks.todo.splice(i, 1);
-        }else if(e.target.parentElement.id === 'ongoing') {
-            tasks.done.push(t);
-            tasks.todo.splice(i, 1);
-        }else if(e.target.parentElement.id === 'done') {
+
+    const goBack = (e, index, t) => {
+        let target = e.target.parentElement;
+        
+        if(target.id === 'todo') {
+            setBackLog(backLog.concat(t));
+            todo.splice(index, 1);
+        }else if(target.id === 'ongoing') {
+            setTodo(todo.concat(t));
+            onGoing.splice(index, 1);
+        }else if(target.id === 'done') {
+            setOnGoing(onGoing.concat(t));
+            done.splice(index, 1);
+        }else{
+            return;
+        }
+    }
+    const goForward = (e, index, t) => {
+        let target = e.target.parentElement;
+        if(target.id === 'backlog') {
+            setTodo(todo.concat(t));
+            backLog.splice(index, 1);
+        }else if(target.id === 'todo') {
+            setOnGoing(onGoing.concat(t));
+            todo.splice(index, 1);
+        }else if(target.id === 'ongoing') {
+            setDone(done.concat(t));
+            onGoing.splice(index, 1);
+        }else{
             return;
         }
 
     }
+    const goTogitHub = () => {
+        const url = 'https://github.com/u31999';
+        window.open(url, '_blank');
+    }
+    
+    
     return(
-        <div>
-            <div style='display: flex, align-items: center'>KABNAN BOARD</div>
-        <div>
-            <input name='task' id='task' palceholder='Enter a task'></input>
+        <div className = {classes.kabnanPage}>
+            <div className={classes.title}>KABNAN BOARD</div>
+        <div className={classes.inputContainer}>
+            <input name='task' id='task' placeholder='Enter a Task' onKeyUp={enterClicked}></input>
             <button onClick={addTask}>ADD</button>
         </div>
+            <div className={classes.kabnanBoard}>
             <div>
-            <div>Backlog</div>
-            <ul>{tasks.backlog.map((t, i) => 
-            <li key={i}>{t}
-            <div id='backlog'>
-                <button onClick={(e) =>goBack(e, i,t)}>Back</button>
-                <button onClick={(e) => goForward(e, i,t)}>forward</button>
+            <div className={classes.boardTitle}>Backlog</div>
+            <ul>{backLog.map((t, i) => 
+            <li key={i} id={i}>
+            <div>{t}</div>
+            <div id='backlog' className={classes.backLog}>
+                <button className={classes.arrow} onClick={(e) =>goBack(e, i,t)}>{'<'}</button>
+                <button className={classes.arrow} onClick={(e) => goForward(e, i,t)}>{'>'}</button>
             </div></li>)}</ul>
             </div>
             <div>
-                <div>Todo</div>
-                <ul>{tasks.todo.map((t, i)=> <li key={i}>{t}
+                <div className={classes.boardTitle}>Todo</div>
+                <ul>{todo.map((t, i)=>
+                <li key={i} id={i}>
+                <div>{t}</div>
                 <div id='todo'>
-                <button onClick={(e) => goBack(e, i,t)}>Back</button>
-                <button onClick={(e)=>goForward(e, i,t)}>forward</button>
+                <button className={classes.arrow} onClick={(e) => goBack(e, i,t)}>{'<'}</button>
+                <button className={classes.arrow} onClick={(e)=>goForward(e, i,t)}>{'>'}</button>
             </div></li>
                 )}</ul>
             </div>
             <div>
-                <div>Ongoing</div>
-                <ul>{tasks.onGoing.map((t, i) => <li key={i}>{t}
+                <div className={classes.boardTitle}>Ongoing</div>
+                <ul>{onGoing.map((t, i) => <li key={i} id={i}>
+                <div>{t}</div>
                 <div id='ongoing'>
-                <button onClick={(e)=>goBack(e, i,t)}>Back</button>
-                <button onClick={(e) =>goForward(e, i, t)}>forward</button>
+                <button className={classes.arrow} onClick={(e)=>goBack(e, i,t)}>{'<'}</button>
+                <button className={classes.arrow} onClick={(e) =>goForward(e, i, t)}>{'>'}</button>
             </div></li>)}</ul>
             </div>
             <div>
-                <div>Done</div>
-                <ul>{tasks.done.map((t, i) => <li key={i}>{t}
-                <div id='done'>
-                <button onClick={(e) => goBack(e, i, t)}>Back</button>
-                <button onClick={(e) =>goForward(e, i, t)}>forward</button>
+                <div className={classes.boardTitle}>Done</div>
+                <ul>{done.map((t, i) => <li key={i} id={i}>
+                <div>{t}</div>
+                <div className={classes.done} id='done'>
+                <button className={classes.arrow} onClick={(e) => goBack(e, i, t)}>{'<'}</button>
+                <button className={classes.arrow} onClick={(e) =>goForward(e, i, t)}>{'>'}</button>
             </div></li>)}</ul>
             </div>
+            </div>
+            <div className={classes.copyRight} onClick={goTogitHub}>CopyRight @ by <span className={classes.copyRightName}>Ahmed Hassan</span></div>
         </div>
     )
 }
