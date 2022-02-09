@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/kabnan/static/css/main.69015776.css",
+    "main.js": "/kabnan/static/js/main.72ac366a.js",
+    "static/js/787.2a0921e6.chunk.js": "/kabnan/static/js/787.2a0921e6.chunk.js",
+    "index.html": "/kabnan/index.html",
+    "main.69015776.css.map": "/kabnan/static/css/main.69015776.css.map",
+    "main.72ac366a.js.map": "/kabnan/static/js/main.72ac366a.js.map",
+    "787.2a0921e6.chunk.js.map": "/kabnan/static/js/787.2a0921e6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.69015776.css",
+    "static/js/main.72ac366a.js"
+  ]
+}
